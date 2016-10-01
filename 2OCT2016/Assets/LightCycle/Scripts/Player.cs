@@ -10,23 +10,31 @@ public class Player : MonoBehaviour {
 	{
 		startPos = transform.position;
 	}
-	
-	void Update () 
-	{
-	
-	}
 
 	void Die()
 	{
 		if (alive == true)
 		{
 			alive = false;
-			Invoke ("Respawn", .1f);
+			Invoke ("Respawn", .01f);
+			ScoreKeeper.Instance.PauseScoreKeeping ();
 		}
+	}
+
+	void OnCollisionEnter()
+	{
+		Die ();
+		Time.timeScale = .01f;
 	}
 
 	void Respawn()
 	{
+		BroadcastMessage ("Restart");
+		alive = true;
+		ScoreKeeper.Instance.ResetScore ();
+		ScoreKeeper.Instance.ResumeScoreKeeping ();
 		transform.position = startPos;
+
+		Time.timeScale = 1;
 	}
 }
