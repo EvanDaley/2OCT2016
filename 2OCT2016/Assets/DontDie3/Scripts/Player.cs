@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour {
 
@@ -21,10 +22,17 @@ public class Player : MonoBehaviour {
 		}
 	}
 
-	void OnCollisionEnter()
+	void OnCollisionEnter(Collision collision)
 	{
-		Die ();
-		Time.timeScale = .01f;
+		if (collision.gameObject.layer == 8)
+		{
+			SceneManager.LoadScene (2);
+		} 
+		else
+		{
+			Die ();
+			Time.timeScale = .01f;
+		}
 	}
 
 	void Respawn()
